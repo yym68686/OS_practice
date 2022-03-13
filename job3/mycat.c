@@ -14,18 +14,15 @@ int main(int argc, char *argv[])
         printf("Open file %s failed.\n", filename);
         return 0;
     }
-    while(size)
+    size = read(fd, buf, 11111);
+    if (-1 == size)
     {
-        size = read(fd, buf, 11111);
-        if (-1 == size)
-        {
-            close(fd);
-            printf("Read file %s error occurs.\n", filename);
-            return 0;
-        }
-        if (size > 0)
-            for(i = 0; i < size; i++) 
-                printf("%c",*(buf + i));
+        close(fd);
+        printf("Read file %s error occurs.\n", filename);
+        return 0;
     }
+    if (size > 0)
+        for(i = 0; i < size; i++) 
+            printf("%c",*(buf + i));
     return 0;
 }
