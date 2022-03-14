@@ -6,29 +6,51 @@
 #include <sys/types.h>
 void mysys(char *command)
 {
-	if (strcmp(command, "exit") == 0) {
+	//字符串处理
+	char *str = (char *)malloc(sizeof(command)), *p, *argv[11111];
+	int i = 0, error = -1;
+	strcpy(str, command);
+	p = strtok(str, " ");
+	while(p != NULL) {
+		argv[i++] = p;
+		p = strtok(NULL, " ");
+	}
+	argv[i] = NULL;
+
+	//内置指令
+	if (strcmp(argv[0], "cd") == 0){
+		int error = chdir(argv[1]);
+		if (error >= 0){
+			char *path = getcwd(NULL, 0);
+			printf("%s\n", path);
+			free(path);
+		}
+		else {
+			puts("change dir error!");
+		}
+		return;
+	}
+	else if (strcmp(argv[0], "pwd") == 0) {
+		char *path = getcwd(NULL, 0);
+		printf("%s\n", path);
+		free(path);
+		return;
+	}
+	else if (strcmp(argv[0], "exit") == 0) {
 		exit(0);
 	}
-    pid_t pid;
-    pid = fork();
-    if (pid == 0){
-		char *str = (char *)malloc(sizeof(command));
-	    strcpy(str, command);
-		char *p, *argv[11111];
-        int i = 0, error = -1;
-		p = strtok(str, " ");
-        while(p != NULL) {
-            argv[i++] = p;
-            p = strtok(NULL, " ");
-        }
-        argv[i] = NULL;
+	
+	//多线程
+	pid_t pid;
+	pid = fork();
+	if (pid == 0){
 		error = execvp(argv[0], argv);
-        if (error == -1) {
-            puts("exec error!");
-            return;
-        }
-    }
-    wait(NULL);
+		if (error == -1) {
+			puts("exec error!");
+			exit(0);
+		}
+	}
+	wait(NULL);
 }
 
 int main()
@@ -36,6 +58,7 @@ int main()
 	char command[11111];
 	int count;
     while (1){
+		//不能用scanf
 		write(1, "> ", sizeof("> "));
 		count = read(0, command, sizeof(command));
 		command[count - 1] = 0;
