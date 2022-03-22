@@ -177,3 +177,5 @@ test
     z
   c
 ```
+参考链接：
+[文件描述符](https://www.linuxmooc.com/courses/fd/)
