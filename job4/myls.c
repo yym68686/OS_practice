@@ -2,6 +2,7 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 int main(int argc, char *argv[])
 {
 	DIR* dirp;
@@ -15,7 +16,8 @@ int main(int argc, char *argv[])
         for(;;) {
             direntp = readdir(dirp);
             if(direntp == NULL) break;
-            printf("%s\n", direntp->d_name);
+			if (strcmp(direntp->d_name, ".") != 0 && strcmp(direntp->d_name, "..") != 0)
+				printf("%s\n", direntp->d_name);
         }
         closedir(dirp);
         return EXIT_SUCCESS;
