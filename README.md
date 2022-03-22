@@ -1,5 +1,7 @@
 # 2022南航计算机学院操作系统课程的实验代码
 
+[系统调用课程主页](https://www.linuxmooc.com/courses/io/)
+
 文件读写编程题目
 
 ## job3/myecho.c
@@ -128,6 +130,10 @@ bin:x:2:2:bin:/bin:/usr/sbin/nologin
 
 实现内置命令cd、pwd、exit
 
+参考链接：
+[基本I/O系统调用](https://www.cnblogs.com/QG-whz/p/5469891.html)
+
+
 ## job4/myls.c
 
 myls.c的功能与系统ls程序相同
@@ -171,8 +177,3 @@ test
     z
   c
 ```
-
-[系统调用课程主页](https://www.linuxmooc.com/courses/io/)
-
-参考链接：
-[基本I/O系统调用](https://www.cnblogs.com/QG-whz/p/5469891.html)
