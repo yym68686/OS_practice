@@ -1,32 +1,5 @@
 # 2022南航计算机学院操作系统课程的实验代码
 
-## job4/myls.c
-
-myls.c的功能与系统ls程序相同
-
-opendir readdir closedir
-
-在命令行中输入 man opendir 获取帮助
-
-列出指定目录下的文件，例子如下：
-
-```
-$ ./myls job4/test
-a
-b
-c
-```
-
-列出当前目录下的文件，例子如下：
-
-```
-$ cd job4/test 
-$ ./myls
-a
-b
-c
-```
-
 文件读写编程题目
 
 ## job3/myecho.c
@@ -144,7 +117,7 @@ echo a b c
 a b c
 ```
 
-# sh1打印提示符>，同时读取用户输入的命令cat，并执行输出结果
+### sh1打印提示符>，同时读取用户输入的命令cat，并执行输出结果
 
 ```
 cat /etc/passwd
@@ -154,6 +127,33 @@ bin:x:2:2:bin:/bin:/usr/sbin/nologin
 ```
 
 实现内置命令cd、pwd、exit
+
+## job4/myls.c
+
+myls.c的功能与系统ls程序相同
+
+opendir readdir closedir
+
+在命令行中输入 man opendir 获取帮助
+
+列出指定目录下的文件，例子如下：
+
+```
+$ ./myls job4/test
+a
+b
+c
+```
+
+列出当前目录下的文件，例子如下：
+
+```
+$ cd job4/test 
+$ ./myls
+a
+b
+c
+```
 
 ## job4/mytree.c
 
