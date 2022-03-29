@@ -25,9 +25,8 @@ void mysys(char *command)
 			printf("%s\n", path);
 			free(path);
 		}
-		else {
+		else
 			puts("change dir error!");
-		}
 		return;
 	}
 	else if (strcmp(argv[0], "pwd") == 0) {
@@ -36,12 +35,13 @@ void mysys(char *command)
 		free(path);
 		return;
 	}
-	else if (strcmp(argv[0], "exit") == 0) {
+	else if (strcmp(argv[0], "exit") == 0)
 		exit(0);
-	}
 	
 	//多线程
 	pid_t pid;
+	int fd[2];
+	pipe(fd);
 	pid = fork();
 	if (pid == 0){
 		error = execvp(argv[0], argv);
