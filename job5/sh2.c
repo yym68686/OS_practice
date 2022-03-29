@@ -8,8 +8,6 @@ void mysys(char *command)
 {
 	//字符串处理
 	char *str = (char *)malloc(sizeof(command)), *p, *argv[11111], *pipestr[] = {">", "<", ">>", "<<", "|"};
-	printf("%ld\n", sizeof(pipestr));
-	return;
 	int i = 0, error = -1, pipeflag = -1, pipestrflag = -1;
 	strcpy(str, command);
 	p = strtok(str, " ");
@@ -26,7 +24,7 @@ void mysys(char *command)
 	if (pipeflag >= 0) {
 		char *command1[111], *command2[111];
 		int i = 0, j = 0, k = 0;
-		while (i != pipestrflag){
+		while (i != pipeflag){
 			command1[i++] = argv[k++];
 		}
 		command1[i] = NULL, k++;
@@ -34,30 +32,31 @@ void mysys(char *command)
 			command2[j++] = argv[k++];
 		}
 		command2[j] = NULL;
-
-		pid_t pid;
-		int fd[2];
-		pipe(fd);
-		pid = fork();
-		if (pid == 0){
-			dup2(fd[1], 1);
+		if (pipestrflag == 4){
+			pid_t pid;
+			int fd[2];
+			pipe(fd);
+			pid = fork();
+			if (pid == 0){
+				dup2(fd[1], 1);
+				close(fd[0]);
+				close(fd[1]);
+				error = execvp(command1[0], command1);
+				if (error == -1) {
+					puts("exec error!");
+					exit(0);
+				}
+			}
+			dup2(fd[0], 0);
 			close(fd[0]);
 			close(fd[1]);
-			error = execvp(command1[0], command1);
+			error = execvp(command2[0], command2);
 			if (error == -1) {
 				puts("exec error!");
 				exit(0);
 			}
+			wait(NULL);
 		}
-		dup2(fd[0], 0);
-		close(fd[0]);
-		close(fd[1]);
-		error = execvp(command2[0], command2);
-		if (error == -1) {
-			puts("exec error!");
-			exit(0);
-		}
-		wait(NULL);
 		return;
 	}
 	else if (strcmp(argv[0], "cd") == 0){
