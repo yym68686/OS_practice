@@ -56,6 +56,11 @@ void mysys(char *command)
 	dup2(fd[0], 0);
 	close(fd[0]);
 	close(fd[1]);
+	error = execvp(argv[0], argv);
+	if (error == -1) {
+		puts("exec error!");
+		exit(0);
+	}
 	wait(NULL);
 }
 
