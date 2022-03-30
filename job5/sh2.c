@@ -32,41 +32,41 @@ void mysys(char *command)
 			command2[j++] = argv[k++];
 		command2[j] = NULL;
 
-		if (pipestrflag == 1){
-			pid_t pid;
-			int fd[2];
-			pipe(fd);
-			pid = fork();
-			if (pid == 0){
-				dup2(fd[1], 1);
-				close(fd[0]);
-				close(fd[1]);
-				//if (pipestrflag == 0) {
-				//	error = execvp(command1[0], command1);
-				//	if (error == -1) {
-				//		puts("exec error!");
-				//		exit(0);
-				//	}
-				//}
-				puts("***");
-				int fd = open(command2[0], O_RDONLY | O_CREAT | O_TRUNC);
+		pid_t pid;
+		int fd[2];
+		pipe(fd);
+		pid = fork();
+		if (pid == 0){
+			dup2(fd[1], 1);
+			close(fd[0]);
+			close(fd[1]);
+			if (pipestrflag == 0) {
+				error = execvp(command1[0], command1);
+				if (error == -1) {
+					puts("exec error!");
+					exit(0);
+				}
+			}
+			else if (pipestrflag == 1){
+				int fd = open(command2[0], O_RDONLY);
 				char buf[111111];
 				read(fd, buf, sizeof(buf));
 				close(fd);
 				write(1, buf, sizeof(buf));
 			}
-			wait(NULL);
-			dup2(fd[0], 0);
-			close(fd[0]);
-			close(fd[1]);
-			printf("%d\n", pipestrflag);
-			//if (pipestrflag == 0) {
-			//	char buf[111111];
-			//	read(0, buf, sizeof(buf));
-			//	int fd = open(command2[0], O_WRONLY | O_CREAT | O_TRUNC);
-			//	write(fd, buf, sizeof(buf));
-			//	close(fd);
-			//}
+			exit(0);
+		}
+		dup2(fd[0], 0);
+		close(fd[0]);
+		close(fd[1]);
+		if (pipestrflag == 0) {
+			char buf[111111];
+			read(0, buf, sizeof(buf));
+			int fd = open(command2[0], O_WRONLY | O_CREAT | O_TRUNC);
+			write(fd, buf, sizeof(buf));
+			close(fd);
+		}
+		else if (pipestrflag == 1){
 			error = execvp(command1[0], command1);
 			if (error == -1) {
 				puts("exec error!");
