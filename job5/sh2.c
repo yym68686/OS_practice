@@ -41,7 +41,7 @@ void mysys(char *command)
 			dup2(fd[1], 1);
 			close(fd[0]);
 			close(fd[1]);
-			if (pipestrflag == 0) {
+			if (pipestrflag == 0 || pipestrflag == 2) {
 				error = execvp(command1[0], command1);
 				if (error == -1) {
 					puts("exec error!");
@@ -61,11 +61,15 @@ void mysys(char *command)
 		dup2(fd[0], 0);
 		close(fd[0]);
 		close(fd[1]);
-		if (pipestrflag == 0) {
+		if (pipestrflag == 0 || pipestrflag == 2) {
 			char buf[1111];
 			int count = read(0, buf, sizeof(buf));
 			buf[count - 1] = 0;
-			int fd = open(command2[0], O_WRONLY | O_CREAT | O_TRUNC);
+			int fd;
+			if (pipestrflag == 0)
+				fd = open(command2[0], O_WRONLY | O_CREAT | O_TRUNC);
+			else
+				fd = open(command2[0], O_WRONLY | O_APPEND);
 			write(fd, buf, count - 1);
 			close(fd);
 		}
