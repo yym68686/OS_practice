@@ -196,3 +196,5 @@ References
 [Linux Shell 输入重定向](http://c.biancheng.net/view/942.html)
 
 [Shell 输入/输出重定向](https://www.runoob.com/linux/linux-shell-io-redirections.html)
+
+[Linux文件IO-open,write,read,lseek,close](https://blog.csdn.net/u014530704/article/details/76990397)
