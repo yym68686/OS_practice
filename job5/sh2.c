@@ -21,6 +21,7 @@ void mysys(char *command)
 		p = strtok(NULL, " ");
 	}
 	argv[i] = NULL;
+
 	//内置指令
 	if (pipeflag >= 0) {
 		char *command1[111], *command2[111];
@@ -61,7 +62,8 @@ void mysys(char *command)
 		close(fd[1]);
 		if (pipestrflag == 0) {
 			char buf[111111];
-			read(0, buf, sizeof(buf));
+			int count = read(0, buf, sizeof(buf));
+			buf[count - 1] = 0;
 			int fd = open(command2[0], O_WRONLY | O_CREAT | O_TRUNC);
 			write(fd, buf, sizeof(buf));
 			close(fd);
@@ -97,26 +99,13 @@ void mysys(char *command)
 	
 	//多线程
 	pid_t pid;
-	int fd[2];
-	pipe(fd);
 	pid = fork();
 	if (pid == 0){
-		dup2(fd[1], 1);
-		close(fd[0]);
-		close(fd[1]);
 		error = execvp(argv[0], argv);
 		if (error == -1) {
 			puts("exec error!");
 			exit(0);
 		}
-	}
-	dup2(fd[0], 0);
-	close(fd[0]);
-	close(fd[1]);
-	error = execvp(argv[0], argv);
-	if (error == -1) {
-		puts("exec error!");
-		exit(0);
 	}
 	wait(NULL);
 }
@@ -124,9 +113,11 @@ void mysys(char *command)
 int main()
 {
 	char command[11111];
-	int count;
+	int count, fdin = dup(0), fdout = dup(1);
     while (1){
 		//不能用scanf
+		dup2(fdin, 0);
+		dup2(fdout, 1);
 		write(1, "> ", sizeof("> "));
 		count = read(0, command, sizeof(command));
 		command[count - 1] = 0;
