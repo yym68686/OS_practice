@@ -51,9 +51,10 @@ void mysys(char *command)
 			else if (pipestrflag == 1){
 				int fd = open(command2[0], O_RDONLY);
 				char buf[111111];
-				read(fd, buf, sizeof(buf));
+				int count = read(fd, buf, sizeof(buf));
+				buf[count - 1] = 0;
+				write(1, buf, count - 1);
 				close(fd);
-				write(1, buf, sizeof(buf));
 			}
 			exit(0);
 		}
@@ -61,11 +62,11 @@ void mysys(char *command)
 		close(fd[0]);
 		close(fd[1]);
 		if (pipestrflag == 0) {
-			char buf[111111];
+			char buf[1111];
 			int count = read(0, buf, sizeof(buf));
 			buf[count - 1] = 0;
 			int fd = open(command2[0], O_WRONLY | O_CREAT | O_TRUNC);
-			write(fd, buf, sizeof(buf));
+			write(fd, buf, count - 1);
 			close(fd);
 		}
 		else if (pipestrflag == 1){
