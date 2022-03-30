@@ -1,7 +1,9 @@
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 void mysys(char *command)
@@ -19,20 +21,18 @@ void mysys(char *command)
 		p = strtok(NULL, " ");
 	}
 	argv[i] = NULL;
-
 	//内置指令
 	if (pipeflag >= 0) {
 		char *command1[111], *command2[111];
 		int i = 0, j = 0, k = 0;
-		while (i != pipeflag){
+		while (i != pipeflag)
 			command1[i++] = argv[k++];
-		}
 		command1[i] = NULL, k++;
-		while (j != sizeof(argv) / sizeof(argv[0])){
+		while (j != sizeof(argv) / sizeof(argv[0]))
 			command2[j++] = argv[k++];
-		}
 		command2[j] = NULL;
-		if (pipestrflag == 4){
+
+		if (pipestrflag == 1){
 			pid_t pid;
 			int fd[2];
 			pipe(fd);
@@ -41,21 +41,37 @@ void mysys(char *command)
 				dup2(fd[1], 1);
 				close(fd[0]);
 				close(fd[1]);
-				error = execvp(command1[0], command1);
-				if (error == -1) {
-					puts("exec error!");
-					exit(0);
-				}
+				//if (pipestrflag == 0) {
+				//	error = execvp(command1[0], command1);
+				//	if (error == -1) {
+				//		puts("exec error!");
+				//		exit(0);
+				//	}
+				//}
+				puts("***");
+				int fd = open(command2[0], O_RDONLY | O_CREAT | O_TRUNC);
+				char buf[111111];
+				read(fd, buf, sizeof(buf));
+				close(fd);
+				write(1, buf, sizeof(buf));
 			}
+			wait(NULL);
 			dup2(fd[0], 0);
 			close(fd[0]);
 			close(fd[1]);
-			error = execvp(command2[0], command2);
+			printf("%d\n", pipestrflag);
+			//if (pipestrflag == 0) {
+			//	char buf[111111];
+			//	read(0, buf, sizeof(buf));
+			//	int fd = open(command2[0], O_WRONLY | O_CREAT | O_TRUNC);
+			//	write(fd, buf, sizeof(buf));
+			//	close(fd);
+			//}
+			error = execvp(command1[0], command1);
 			if (error == -1) {
 				puts("exec error!");
 				exit(0);
 			}
-			wait(NULL);
 		}
 		return;
 	}

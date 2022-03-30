@@ -1,6 +1,12 @@
 # 2022南航计算机学院操作系统课程的实验代码
 
-[系统调用课程主页](https://www.linuxmooc.com/courses/io/)
+文档：
+
+[基本I/O系统调用](https://www.linuxmooc.com/courses/io/)
+
+[文件描述符](https://www.linuxmooc.com/courses/fd/)
+
+[进程管理](https://www.linuxmooc.com/courses/proc/)
 
 文件读写编程题目
 
@@ -177,5 +183,15 @@ test
     z
   c
 ```
-参考链接：
-[文件描述符](https://www.linuxmooc.com/courses/fd/)
+
+## job5/sh2.c
+实现shell程序，要求在第1版的基础上，增加文件重定向功能
+
+- 重定向输入
+- 重定向输出
+- 重定向追加
+
+References
+[Linux Shell 输入重定向](http://c.biancheng.net/view/942.html)
+
+[Shell 输入/输出重定向](https://www.runoob.com/linux/linux-shell-io-redirections.html)
