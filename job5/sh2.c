@@ -108,7 +108,6 @@ void mysys(char *command)
 			exit(0);
 		}
 	}
-	wait(NULL);
 }
 
 int main()
@@ -116,9 +115,10 @@ int main()
 	char command[11111];
 	int count, fdin = dup(0), fdout = dup(1);
     while (1){
-		//不能用scanf
+		wait(NULL);
 		dup2(fdin, 0);
 		dup2(fdout, 1);
+		//不能用scanf
 		write(1, "> ", sizeof("> "));
 		count = read(0, command, sizeof(command));
 		if (count == 1) continue;
