@@ -121,6 +121,7 @@ int main()
 		dup2(fdout, 1);
 		write(1, "> ", sizeof("> "));
 		count = read(0, command, sizeof(command));
+		if (count == 1) continue;
 		command[count - 1] = 0;
         mysys(command);
     }
