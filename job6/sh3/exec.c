@@ -23,11 +23,23 @@
 //  output
 void tree_execute_redirect(tree_t *this)
 {
+	puts("redirct");
+	if (child_vector[0]->type == TREE_BASIC)
+		tree_execute_basic(child_vector[0]);
+	if (child_vector[0]->type == TREE_REDIRICT)
+		tree_execute_redirect(child_vector[0]);
+	printf("%s\n", child_vector[1]);
+	printf("%s\n", child_vector[2]);
+	
 }
 
 #define MAX_ARGC 16
 void tree_execute_basic(tree_t *this)
 {
+	puts("basic");
+	for (int i = 0; i < this->child_count; ++i){
+		printf("%s\n", child_vector[i]->token);
+	}
 }
 
 // echo abc | grep b
@@ -48,6 +60,10 @@ void tree_execute_basic(tree_t *this)
 //   cmdC
 void tree_execute_pipe(tree_t *this)
 {
+	puts("pipe");
+	tree_execute_redirect(child_vector[0]);
+	if (this->child_count == 2)
+		tree_execute_pipe(child_vector[1]);
 }
 
 // # line 
@@ -81,6 +97,10 @@ int tree_execute_builtin(tree_t *this)
 // child count == 1
 void tree_execute_async(tree_t *this)
 {
+	puts("back");
+	//for (int i = 0; i < this->child_count; ++i){
+	tree_execute_pipe(child_vector[0]);
+	//}
 }
 
 // Inside child process

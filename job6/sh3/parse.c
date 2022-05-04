@@ -23,7 +23,7 @@ tree_t *tree_new(int type)
 void indent(int level, char *text)
 {
     int i;
-    for (i = 0; i < level; i++)
+ for (i = 0; i < level; i++)
         printf("  ");
     puts(text);
 }
@@ -48,7 +48,7 @@ void tree_dump(tree_t *this, int level)
             break;
 
         case TREE_TOKEN:
-            indent(level, this->token);
+ indent(level, this->token);
             break;
     }
 
