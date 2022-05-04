@@ -1,0 +1,70 @@
+echo abc | wc -l
+pipe
+  basic
+    echo
+    abc
+  basic
+    wc
+    -l
+
+cat main.c | grep int | wc -l
+pipe
+  pipe
+    basic
+      cat
+      main.c
+    basic
+      grep
+      int
+  basic
+    wc
+    -l
+
+echo abc | wc -l >log
+pipe
+  basic
+    echo
+    abc
+  redirect
+    basic
+      wc
+      -l
+    >
+    log
+
+redirect
+  pipe
+    basic
+      echo
+      abc
+    basic
+      wc
+      -l
+  >
+  log
+
+gcc big.c &
+back
+  basic
+    gcc
+    big.c
+
+echo abc | wc -l &
+back
+  pipe
+    basic
+      echo
+      abc
+    basic
+      wc
+      -l
+
+cat <input >output
+redirect
+  redirect
+    basic 
+      cat
+    <
+    input
+  >
+  output
