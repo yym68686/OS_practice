@@ -48,7 +48,7 @@ void tree_dump(tree_t *this, int level)
             break;
 
         case TREE_TOKEN:
- indent(level, this->token);
+			indent(level, this->token);
             break;
     }
 

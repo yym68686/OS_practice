@@ -3,6 +3,7 @@
 #include "parse.h"
 #include "exec.h"
 
+//void tree_execute_basic(tree_t *this);
 // echo abc >log
 //
 // redirect
@@ -23,23 +24,25 @@
 //  output
 void tree_execute_redirect(tree_t *this)
 {
-	puts("redirct");
-	if (child_vector[0]->type == TREE_BASIC)
-		tree_execute_basic(child_vector[0]);
-	if (child_vector[0]->type == TREE_REDIRICT)
-		tree_execute_redirect(child_vector[0]);
-	printf("%s\n", child_vector[1]);
-	printf("%s\n", child_vector[2]);
+//	tree_dump(this);
+	//puts("redirct");
+	//if (((tree_t*)vector_get(&this->child_vector, 0))->type == TREE_BASIC)
+	//	tree_execute_basic(this->child_vector.data[0]);
+	//if (((tree_t*)vector_get(&this->child_vector, 0))->type == TREE_REDIRICT)
+	//	tree_execute_redirect(this->child_vector.data[0]);
+	//printf("%s\n", ((tree_t*)vector_get(&this->child_vector, 1))->token);
+	//printf("%s\n", ((tree_t*)vector_get(&this->child_vector, 2))->token);
 	
 }
 
 #define MAX_ARGC 16
 void tree_execute_basic(tree_t *this)
 {
-	puts("basic");
-	for (int i = 0; i < this->child_count; ++i){
-		printf("%s\n", child_vector[i]->token);
-	}
+//	tree_dump(this);
+	//puts("basic");
+	//for (int i = 0; i < this->child_vector.count; ++i){
+	//	printf("%s\n", ((tree_t*)vector_get(&this->child_vector, i))->token);
+	//}
 }
 
 // echo abc | grep b
@@ -60,10 +63,11 @@ void tree_execute_basic(tree_t *this)
 //   cmdC
 void tree_execute_pipe(tree_t *this)
 {
-	puts("pipe");
-	tree_execute_redirect(child_vector[0]);
-	if (this->child_count == 2)
-		tree_execute_pipe(child_vector[1]);
+//	tree_dump(this);
+	//puts("pipe");
+	//tree_execute_redirect((tree_t*)vector_get(&this->child_vector, 0));
+	//if (this->child_vector.count == 2)
+	//	tree_execute_pipe((tree_t*)vector_get(&this->child_vector, 1));
 }
 
 // # line 
@@ -97,9 +101,10 @@ int tree_execute_builtin(tree_t *this)
 // child count == 1
 void tree_execute_async(tree_t *this)
 {
-	puts("back");
+	//puts("back");
+//	tree_dump(this);
 	//for (int i = 0; i < this->child_count; ++i){
-	tree_execute_pipe(child_vector[0]);
+	//tree_execute_pipe((tree_t*)vector_get(&this->child_vector, 0));
 	//}
 }
 

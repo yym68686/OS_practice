@@ -17,7 +17,7 @@ void execute_line(char *line)
     if (verbose)
         tree_dump(tree, 0);
     if (tree != NULL) 
-        tree_execute_wrapper(tree);
+        tree_execute_wrapper(tree), tree_dump(tree, 0);
     lex_destroy();
 }
 
