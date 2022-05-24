@@ -24,6 +24,7 @@
 //  output
 void tree_execute_redirect(tree_t *this)
 {
+
 //	tree_dump(this);
 	//puts("redirct");
 	//if (((tree_t*)vector_get(&this->child_vector, 0))->type == TREE_BASIC)

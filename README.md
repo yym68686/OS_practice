@@ -198,3 +198,121 @@ References
 [Shell 输入/输出重定向](https://www.runoob.com/linux/linux-shell-io-redirections.html)
 
 [Linux文件IO-open,write,read,lseek,close](https://blog.csdn.net/u014530704/article/details/76990397)
+
+## job6/sh3.c
+
+实现shell程序，要求支持基本命令、重定向命令、管道命令、后台命令
+
+使用结构体 tree 描述命令
+参考代码下载
+```
+enum {
+    TREE_BACK,
+    TREE_PIPE,
+    TREE_REDIRICT,
+    TREE_BASIC,
+    TREE_TOKEN,
+};
+
+#define MAX_CHILD 10
+typedef struct {
+    int type;
+    char *token;
+    int child_count;
+    tree_t *child_vector[MAX_CHILD];
+} tree_t;
+
+"echo abc"
++ TREE_BASIC
+  + child_vector
+    + TREE_TOKEN
+      + token = "echo"
+    + TREE_TOKEN
+      + token = "abc"
+
+"echo abc >log"
++ TREE_REDIRICT
+  + TREE_BASIC
+    + child_vector
+      + TREE_TOKEN
+        + token = "echo"
+      + TREE_TOKEN
+        + token = "abc"
+  + TREE_TOKEN  
+    + token = "<"
+  + TREE_TOKEN  
+    + token = "log"
+从命令行中读取一行命令，输出该命令的结构
+echo abc | wc -l
+pipe
+  basic
+    echo
+    abc
+  basic
+    wc
+    -l
+
+cat main.c | grep int | wc -l
+pipe
+  pipe
+    basic
+      cat
+      main.c
+    basic
+      grep
+      int
+  basic
+    wc
+    -l
+
+echo abc | wc -l >log
+pipe
+  basic
+    echo
+    abc
+  redirect
+    basic
+      wc
+      -l
+    >
+    log
+
+redirect
+  pipe
+    basic
+      echo
+      abc
+    basic
+      wc
+      -l
+  >
+  log
+
+gcc big.c &
+back
+  basic
+    gcc
+    big.c
+
+echo abc | wc -l &
+back
+  pipe
+    basic
+      echo
+      abc
+    basic
+      wc
+      -l
+
+cat <input >output
+redirect
+  redirect
+    basic 
+      cat
+    <
+    input
+  >
+  output
+```
+
+

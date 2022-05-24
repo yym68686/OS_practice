@@ -23,7 +23,7 @@ tree_t *tree_new(int type)
 void indent(int level, char *text)
 {
     int i;
- for (i = 0; i < level; i++)
+    for (i = 0; i < level; i++)
         printf("  ");
     puts(text);
 }
