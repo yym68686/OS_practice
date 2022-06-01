@@ -41,8 +41,6 @@ void *vector_pop_back(vector_t *this)
 
 void *vector_get(vector_t *this, int index)
 {
-	printf("**%d >= %d = %d\n", index, this->count, index >= this->count);
-	printf("**%d < %d = %d\n", index, this->count, index < this->count);
     assert(index < this->count);
     return this->data[index];
 }
