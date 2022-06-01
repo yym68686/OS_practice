@@ -29,7 +29,6 @@ void tree_execute_redirect(tree_t *this)
 	tree_t *file = tree_get_child(this, 2);
 	char *path;
 	int fd;
-	int redirect_fd;
 
 	path = file->token;
 	if (token_is(operator, "<")) {
@@ -56,7 +55,7 @@ void tree_execute_basic(tree_t *this)
 	int i;
 	tree_t *child;
 	vector_each(&this->child_vector, i, child)
-		argv[argv++] = child->token;
+		argv[argc++] = child->token;
 	argv[argc] = NULL;
 	execvp(argv[0], argv);
 
