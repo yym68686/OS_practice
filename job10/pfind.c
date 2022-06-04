@@ -54,27 +54,27 @@ sema_t full_buffer_sema;
 struct task get_item()
 {
 
-	sema_wait(&full_buffer_sema);
-	sema_wait(&mutex_sema);
+    sema_wait(&full_buffer_sema);
+    sema_wait(&mutex_sema);
 
     struct task item = buffer[out];
     out = (out + 1) % CAPACITY;
 
-	sema_signal(&mutex_sema);
-	sema_signal(&empty_buffer_sema);
+    sema_signal(&mutex_sema);
+    sema_signal(&empty_buffer_sema);
     return item;
 }
 
 void put_item(struct task item)
 {
-	sema_wait(&empty_buffer_sema);
-	sema_wait(&mutex_sema);
+    sema_wait(&empty_buffer_sema);
+    sema_wait(&mutex_sema);
 
     buffer[in] = item;
     in = (in + 1) % CAPACITY;
 
-	sema_signal(&mutex_sema);
-	sema_signal(&full_buffer_sema);
+    sema_signal(&mutex_sema);
+    sema_signal(&full_buffer_sema);
 }
 
 void find_file(char *path, char *target)
@@ -97,17 +97,17 @@ void find_dir(char *path, char *target)
             continue;
         if (strcmp(entry->d_name, "..") == 0)
             continue;
-		strcpy(basepath, path);
-		strcat(basepath, "/");
-		strcat(basepath, entry->d_name);
+        strcpy(basepath, path);
+        strcat(basepath, "/");
+        strcat(basepath, entry->d_name);
         if (entry->d_type == DT_DIR)
             find_dir(basepath, target);
         if (entry->d_type == DT_REG){
-			struct task buf;
-			buf.is_end = 0;
-			strcpy(buf.path, basepath);
-			strcpy(buf.string, target);
-			put_item(buf);
+            struct task buf;
+            buf.is_end = 0;
+            strcpy(buf.path, basepath);
+            strcpy(buf.string, target);
+            put_item(buf);
         }
     }
     closedir(dir);
@@ -116,10 +116,10 @@ void find_dir(char *path, char *target)
 void *worker_entry(void *arg)
 {
     while(1) {
-		struct task item = get_item();
-		if (item.is_end)
-			break;
-		find_file(item.path, item.string);
+        struct task item = get_item();
+        if (item.is_end)
+            break;
+        find_file(item.path, item.string);
     }
     return NULL;
 }
@@ -137,20 +137,20 @@ int main(int argc, char *argv[])
     stat(path, &info);
     if (S_ISREG(info.st_mode)){
         find_file(path, string);
-		return 0;
-	}
+        return 0;
+    }
 
     pthread_t consumer_tid[WORKER_NUMBER];
     sema_init(&mutex_sema, 1);
     sema_init(&empty_buffer_sema, CAPACITY - 1);
     sema_init(&full_buffer_sema, 0);
-	for (int i = 0; i < WORKER_NUMBER; ++i)
-		pthread_create(&consumer_tid[i], NULL, worker_entry, NULL);
-	find_dir(path, string);
-	struct task buf;
-	buf.is_end = 1;
-	for (int i = 0; i < WORKER_NUMBER; ++i)
-		put_item(buf);
-	for (int i = 0; i < WORKER_NUMBER; ++i)
-		pthread_join(consumer_tid[i], NULL);
+    for (int i = 0; i < WORKER_NUMBER; ++i)
+        pthread_create(&consumer_tid[i], NULL, worker_entry, NULL);
+    find_dir(path, string);
+    struct task buf;
+    buf.is_end = 1;
+    for (int i = 0; i < WORKER_NUMBER; ++i)
+        put_item(buf);
+    for (int i = 0; i < WORKER_NUMBER; ++i)
+        pthread_join(consumer_tid[i], NULL);
 }
