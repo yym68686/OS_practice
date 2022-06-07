@@ -1,6 +1,7 @@
 # 2022南航计算机学院操作系统实践
 
 - [2022南航计算机学院操作系统实践](#2022南航计算机学院操作系统实践)
+- [References](#references)
 - [Job1](#job1)
   - [实验内容](#实验内容)
 - [Job2](#job2)
@@ -41,7 +42,6 @@
 - [Job10](#job10)
   - [实验内容](#实验内容-5)
   - [实验过程](#实验过程-4)
-- [References](#references)
 
 项目地址：
 
@@ -50,6 +50,14 @@
 课程网站：
 
 [https://www.nuaalab.cn](https://www.nuaalab.cn/)
+
+# References
+
+[summershrimp/NUAA-OSExam: NUAA OS实验课 2016 考试题目 (github.com)](https://github.com/summershrimp/NUAA-OSExam)
+
+[Sk-Raven/NUAA-OSLAB-2019: 南航OS实验2019 (github.com)](https://github.com/Sk-Raven/NUAA-OSLAB-2019)
+
+[killthatshaman/NUAA_OS_EXAM: nuaa 操作系统 上机考试 (github.com)](https://github.com/killthatshaman/NUAA_OS_EXAM)
 
 # Job1
 
@@ -2148,11 +2156,3 @@ int main(int argc, char *argv[])
 - 先运行一次find_dir函数，初始化一次缓冲区，如果缓冲区未满就放入一些标识项，标记缓冲区的尾部。
 - 最后等待消费者进程全部结束。
 - find_dir函数获取当前路径下的目录，便利搜索，如果是文件，直接调用find_file搜索字符串，如果是文件夹，在缓冲区放入新的文件夹下的文件。
-
-# References
-
-[summershrimp/NUAA-OSExam: NUAA OS实验课 2016 考试题目 (github.com)](https://github.com/summershrimp/NUAA-OSExam)
-
-[Sk-Raven/NUAA-OSLAB-2019: 南航OS实验2019 (github.com)](https://github.com/Sk-Raven/NUAA-OSLAB-2019)
-
-[killthatshaman/NUAA_OS_EXAM: nuaa 操作系统 上机考试 (github.com)](https://github.com/killthatshaman/NUAA_OS_EXAM)
